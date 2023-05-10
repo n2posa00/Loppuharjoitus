@@ -4,7 +4,7 @@ require_once './inc/headers.php';
 
 $dbcon = openDb();
 
-$artist_id = $_GET["id"];
+$artist_id = strip_tags($_GET["id"]);
 
 $sql = "SELECT AlbumId FROM albums WHERE ArtistId = $artist_id";
 $statement = $dbcon->prepare($sql);

@@ -4,10 +4,10 @@ require_once './inc/headers.php';
 
 $dbcon = openDb();
 
-$artist = $_POST["artist"];
-$album = $_POST["album"];
+$artist = filter_var(strip_tags($_POST["artist"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$album = filter_var(strip_tags($_POST["album"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $tracks = $_POST["track"];
-$mediatype = $_POST["mediatype"];
+$mediatype = filter_var(strip_tags($_POST["mediatype"]), FILTER_SANITIZE_NUMBER_INT);
 
 try {
     
@@ -26,6 +26,7 @@ try {
     $last_id = $dbcon->lastInsertId();
 
     foreach($tracks as $track) {
+        $track = filter_var(strip_tags($track), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sql = "INSERT INTO tracks (Name, AlbumId, MediaTypeId) VALUES ('$track','$last_id','$mediatype')";
         $statement = $dbcon->prepare($sql);
         $statement->execute();
